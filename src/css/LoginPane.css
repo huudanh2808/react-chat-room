@@ -1,0 +1,18 @@
+.greeting {
+    width: 100%;
+    font-size: 60px;
+    color: #0984e3;
+    text-align: center;
+}
+.app-name {
+    color: pink;
+}
+.login-btn-container {
+    padding: 20px;
+    width: 100%;
+    text-align: center;
+    margin: auto;
+}
+.login-btn{
+    margin: auto;
+}
