@@ -1,6 +1,8 @@
-import { createStore, combineReducers, compose } from 'redux'
+import { createStore, combineReducers, compose, applyMiddleware } from 'redux'
 import { reactReduxFirebase, firebaseReducer } from 'react-redux-firebase'
 import firebase from 'firebase'
+import { userListReducer } from '../reducer/UserListReducer'
+import thunk from 'redux-thunk';
 // import 'firebase/firestore' // <- needed if using firestore
 
 const fbConfig = {
@@ -24,6 +26,7 @@ firebase.initializeApp(fbConfig) // <- new to v2.*.*
 // Add Firebase to reducers
 const rootReducer = combineReducers({
     firebase: firebaseReducer,
+    userListReducer
     // firestore: firestoreReducer // <- needed if using firestore
 })
 
@@ -35,6 +38,6 @@ export const store = createStore(
     compose(
         reactReduxFirebase(firebase, rrfConfig), // pass in firebase instance instead of config
         // reduxFirestore(firebase) // <- needed if using firestore
-        //  applyMiddleware(...middleware) // to add other middleware
+        applyMiddleware(thunk) // to add other middleware
     )
 )

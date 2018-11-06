@@ -1,7 +1,9 @@
 .user-list-container {
+    position: fixed;
     overflow: auto;
     margin: auto;
     height: 500px;
+    width: 250px;
     background: #353b48;
     padding: 20px;
     box-shadow: 0px 0px 10px #3d3d3d;
@@ -29,4 +31,16 @@
 }
 .offline {
     color: gray;
+}
+.user-in-user-list-container {
+    overflow: hidden;
+    padding: 3px 10px 3px 10px;
+    border-radius: 5px;
+} 
+.user-in-user-list-container:hover {
+    box-shadow: 0px 0px 10px white;
+    cursor: pointer;
+} 
+.selected {
+    box-shadow: 0px 0px 10px white;
 }

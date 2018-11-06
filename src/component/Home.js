@@ -3,7 +3,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import UserList from './UserList';
-
+import ChatSpace from './ChatSpace'
 const Home = ({ auth, profile, presence, users }) => {
     return (
         <div>
@@ -18,6 +18,9 @@ const Home = ({ auth, profile, presence, users }) => {
             <div className={"container row main-container"}>
                 <div className={"col-md-4 left-col"}>
                     <UserList />
+                </div>
+                <div className={"col-md-7 right-col"}>
+                     <ChatSpace/>
                 </div>
             </div>
         </div>
