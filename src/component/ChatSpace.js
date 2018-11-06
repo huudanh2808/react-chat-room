@@ -36,7 +36,7 @@ const ChatSpace = ({ auth, profile, uidToChat, sendMessages, recivedMessages }) 
             </div>
             <div className="input-area">
                 <textarea disabled={isDisbled} className="text-area" ref={node => input = node}></textarea>
-                <input disabled={isDisbled} className="submit-button" onClick={() => sendMessages(input.value)} type="button" value="Send" />
+                <input disabled={isDisbled} className="submit-button" onClick={() => { sendMessages(input.value); input.value = "" }} type="button" value="Send" />
             </div>
         </div>
     )
