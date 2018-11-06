@@ -1,20 +1,34 @@
 import React from 'react'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import UserList from './UserList';
 
-const Home = ({ auth }) => (
-    <div>
-        <nav className={"navbar navbar-dark bg-dark justify-content-between"}>
-            <div className={"navbar-brand"}>Wonder space</div>
-            <div className={"user-name"}>{"Hello " + auth.displayName}</div>
-        </nav>
-        <div className={"fluid-container"}>
-            <div className={"content"}>In developing</div>
-            <div className={"content"}>Comming soon</div>
+const Home = ({ auth, profile, presence, users }) => {
+    return (
+        <div>
+            <nav className={"navbar sticky-top navbar-dark bg-dark justify-content-between"}>
+                <div className={"navbar-brand"}>Wonder space</div>
+                <div className={"row user-info-wrapper"}>
+                    <div className={"user-name"}>Hello</div>
+                    <img className={"user-avt"} src={profile.avatarUrl} alt="" />
+                    <div className={"user-name"}>{auth.displayName}</div>
+                </div>
+            </nav>
+            <div className={"container row main-container"}>
+                <div className={"col-md-4 left-col"}>
+                    <UserList />
+                </div>
+            </div>
         </div>
-    </div>
-
-)
+    )
+}
 export default compose(
-    connect(({ firebase: { auth } }) => ({ auth }))
+    firebaseConnect(["presence", "users"]),
+    connect(({ firebase: { auth, profile, ordered } }) => ({
+        presence: ordered.presence,
+        users: ordered.users,
+        auth,
+        profile
+    }))
 )(Home)

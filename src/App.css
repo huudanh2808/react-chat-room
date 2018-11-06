@@ -1,9 +1,25 @@
 .user-name {
     color: white;
+    padding: 2px 5px 2px 5px;
+}
+.user-avt {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
+.user-info-wrapper {
+   padding: 4px;
+   text-align: center;
 }
 .content {
     width: 100%;
     font-size: 70px;
     color:#0984e3;
     text-align: center;
+}
+.main-container {
+    margin: auto;
+}
+.left-col {
+    padding: 10px;
 }

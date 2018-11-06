@@ -11,7 +11,11 @@ const fbConfig = {
     storageBucket: "react-chat-room-49b49.appspot.com",
     messagingSenderId: "401429371084"
 } // object containing Firebase config
-const rrfConfig = { userProfile: 'users' } // react-redux-firebase config
+const rrfConfig = {
+    userProfile: 'users',
+    presence: 'presence',
+    sessions: 'sessions'
+} // react-redux-firebase config
 
 // initialize firebase instance
 firebase.initializeApp(fbConfig) // <- new to v2.*.*
