@@ -1,5 +1,5 @@
 import React from 'react'
-import {isLoaded, isEmpty } from 'react-redux-firebase';
+import { isLoaded, isEmpty } from 'react-redux-firebase';
 import '../css/ChatSpace.css'
 import MessageBlock from './MessageBlock';
 import MessageArea from './MessageArea'
@@ -8,21 +8,24 @@ export const ChatSpace = ({ auth, profile, uidToChat, sendMessages, recivedMessa
     var messageDiv = [];
     var isDisbled = true;
     var input;
-    if (isLoaded(recivedMessages) && !isEmpty(recivedMessages) && isLoaded(auth) && isLoaded(uidToChat)) {
+    var fileUpload;
+    if (isLoaded(recivedMessages) && isLoaded(auth) && isLoaded(uidToChat)) {
         isDisbled = false;
-        var thisUserMessagesRawData = recivedMessages.find(data =>
-            data.key === auth.providerData[0].uid
-        );
-        if (thisUserMessagesRawData !== {}) {
-            thisUserMessagesRawData = thisUserMessagesRawData.value[uidToChat];
-            for (var element in thisUserMessagesRawData) {
-                var item = thisUserMessagesRawData[element];
-                messageDiv.push(
-                    <MessageBlock sendTime={item.sendTime}
-                        message={item.message}
-                        from={item.from}
-                        authId={auth.providerData[0].uid}
-                        photoUrl={item.avatar} />)
+        if(!isEmpty(recivedMessages)){
+            var thisUserMessagesRawData = recivedMessages.find(data =>
+                data.key === auth.providerData[0].uid
+            );
+            if (thisUserMessagesRawData !== {}) {
+                thisUserMessagesRawData = thisUserMessagesRawData.value[uidToChat];
+                for (var element in thisUserMessagesRawData) {
+                    var item = thisUserMessagesRawData[element];
+                    messageDiv.push(
+                        <MessageBlock sendTime={item.sendTime}
+                            message={item.message}
+                            from={item.from}
+                            authId={auth.providerData[0].uid}
+                            photoUrl={item.avatar} />)
+                }
             }
         }
     }
@@ -36,9 +39,27 @@ export const ChatSpace = ({ auth, profile, uidToChat, sendMessages, recivedMessa
             </MessageArea>
             <div className="input-area">
                 <textarea disabled={isDisbled} className="text-area" ref={node => input = node}></textarea>
+                <input type="file" accept="image/*" ref={(ref) => fileUpload = ref} />
                 <input disabled={isDisbled} className="submit-button" onClick={() => {
-                    if (input.value !== "") {
-                        sendMessages(input.value);
+
+                    if (fileUpload.files[0] !== undefined) {
+                        var messageWithImg = {};
+                        var reader = new FileReader();
+                        reader.readAsDataURL(fileUpload.files[0]);
+                        reader.onload = () => {
+                            console.log(reader.result);
+                            messageWithImg = {
+                                imgUrl: reader.result,
+                                messageContent: input.value
+                            }
+                            var toSendMessage = JSON.stringify(messageWithImg);
+                            sendMessages(toSendMessage);
+                        };
+                    }
+                    else {
+                        if (input.value !== "") {
+                            sendMessages(input.value);
+                        }
                     }
                     input.value = "";
                 }} type="button" value="Send" />
