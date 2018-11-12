@@ -31,3 +31,10 @@
     height: 40px;
     border-radius: 50%;
 }
+.photo-in-message {
+    height: auto;
+    width: 95%;
+}
+.img-block {
+    width: 80%;
+}
