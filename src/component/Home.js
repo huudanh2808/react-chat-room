@@ -1,10 +1,7 @@
 import React from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
-import UserList from './UserList';
-import ChatSpace from './ChatSpace'
-const Home = ({ auth, profile, presence, users }) => {
+import {UserListContainer} from '../container/UserListContainer';
+import {ChatSpaceContainer} from '../container/ChatSpaceContainer'
+export const Home = ({ auth, profile, presence, users }) => {
     return (
         <div>
             <nav className={"navbar sticky-top navbar-dark bg-dark justify-content-between"}>
@@ -17,21 +14,12 @@ const Home = ({ auth, profile, presence, users }) => {
             </nav>
             <div className={"container row main-container"}>
                 <div className={"col-md-4 left-col"}>
-                    <UserList />
+                    <UserListContainer />
                 </div>
                 <div className={"col-md-7 right-col"}>
-                     <ChatSpace/>
+                     <ChatSpaceContainer/>
                 </div>
             </div>
         </div>
     )
 }
-export default compose(
-    firebaseConnect(["presence", "users"]),
-    connect(({ firebase: { auth, profile, ordered } }) => ({
-        presence: ordered.presence,
-        users: ordered.users,
-        auth,
-        profile
-    }))
-)(Home)

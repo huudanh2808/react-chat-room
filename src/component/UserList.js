@@ -1,20 +1,18 @@
 import React from 'react'
-import { compose } from 'redux'
-import { connect } from 'react-redux'
-import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
+import {isLoaded, isEmpty } from 'react-redux-firebase';
 import '../css/UserList.css'
 import { BeatLoader } from 'react-spinners';
-import User from './UserInUserList';
+import {User} from '../container/UserInUserListContainer';
 
-const UserList = ({ presence, users, profile }) => {
+export const UserList = ({ presence, users, profile }) => {
     const userList = !isLoaded(users) && !isLoaded(profile) ? <BeatLoader />
         : isEmpty(users) ? 'User list is empty'
             : users.map((data, id) => {
                 console.log(profile);
                 if(data.value.providerData[0].uid === profile.providerData[0].uid){
-                    return;
+                    return <div></div>;
                 }
-                return <User id={id} user={data} isOnline={presence.find(p => p.key === data.key) != undefined} />
+                return <User id={id} user={data} isOnline={presence.find(p => p.key === data.key) !== undefined} />
             });
     return (
         <div className="user-list-container">
@@ -22,11 +20,3 @@ const UserList = ({ presence, users, profile }) => {
         </div>
     )
 }
-export default compose(
-    firebaseConnect(["presence", "users"]),
-    connect(({ firebase: { ordered, profile } }) => ({
-        presence: ordered.presence,
-        users: ordered.users,
-        profile: profile
-    }))
-)(UserList) 

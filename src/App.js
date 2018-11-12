@@ -1,19 +1,19 @@
 import React from 'react';
 import './App.css';
 import { Provider } from 'react-redux'
-import LoginPane from './component/LoginPane';
+import {LoginPageContainer} from './container/LoginPaneContainer';
 import { store } from './store/MainStore';
 import { Route, Router } from 'react-router-dom'
 import History from './history'
-import Home from './component/Home'
+import {HomeContainer} from './container/HomeContainer'
 
 const App = () => (
     <Provider store={store}>
         <Router history={History}>
             <div>
-                <Route exact path="/" component={LoginPane}>
+                <Route exact path="/" component={LoginPageContainer}>
                 </Route>
-                <Route path="/home" component={Home}>
+                <Route path="/home" component={HomeContainer}>
 
                 </Route>
             </div>

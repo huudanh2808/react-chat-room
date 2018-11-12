@@ -1,9 +1,7 @@
 import React from 'react'
 import '../css/UserList.css'
-import { selectUser } from '../action/UserListAction'
-import { connect } from 'react-redux'
-import {isLoaded, isEmpty } from 'react-redux-firebase';
-const UserInUserList = ({ user, isOnline, id, onClick , selectedUid}) => {
+import {isLoaded } from 'react-redux-firebase';
+export const UserInUserList = ({ user, isOnline, id, onClick , selectedUid}) => {
     var status = null
     if (isOnline) {
         status = <div className={"online-status online"}>{"Online now"}</div>;
@@ -30,20 +28,3 @@ const UserInUserList = ({ user, isOnline, id, onClick , selectedUid}) => {
         </div>
     )
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        onClick: (uid) => {
-            dispatch(selectUser(uid));
-        }
-    }
-}
-const mapStateToProps = (state) => {
-    return {
-        selectedUid: state.userListReducer.uidToChat
-    }
-}
-const User = connect(mapStateToProps,
-    mapDispatchToProps
-)(UserInUserList)
-
-export default User;
