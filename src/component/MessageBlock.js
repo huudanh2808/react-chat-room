@@ -16,7 +16,10 @@ const MessageBlock = ({ sendTime, message, photoUrl, from, authId }) => {
     if (isJsonString(message)) {
         var messageJson = JSON.parse(message);
         if (isRightMessage(messageJson)) {
-            messageContent = <img className={"photo-in-message"} src={messageJson.imgUrl} alt="" />
+            messageContent = <div>
+                <img className={"photo-in-message"} src={messageJson.imgUrl} alt="" />
+                <p>{messageJson.messageContent}</p>
+            </div>
         }
     }
     else {

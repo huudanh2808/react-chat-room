@@ -4,14 +4,14 @@ import '../css/ChatSpace.css'
 import MessageBlock from './MessageBlock';
 import MessageArea from './MessageArea'
 
-export const ChatSpace = ({ auth, profile, uidToChat, sendMessages, recivedMessages }) => {
+export const ChatSpace = ({ auth, profile, storage, uidToChat, sendMessages, recivedMessages, uploadAndGetUrl }) => {
     var messageDiv = [];
     var isDisbled = true;
     var input;
     var fileUpload;
     if (isLoaded(recivedMessages) && isLoaded(auth) && isLoaded(uidToChat)) {
         isDisbled = false;
-        if(!isEmpty(recivedMessages)){
+        if (!isEmpty(recivedMessages)) {
             var thisUserMessagesRawData = recivedMessages.find(data =>
                 data.key === auth.providerData[0].uid
             );
@@ -39,31 +39,29 @@ export const ChatSpace = ({ auth, profile, uidToChat, sendMessages, recivedMessa
             </MessageArea>
             <div className="input-area">
                 <textarea disabled={isDisbled} className="text-area" ref={node => input = node}></textarea>
-                <input type="file" accept="image/*" ref={(ref) => fileUpload = ref} />
                 <input disabled={isDisbled} className="submit-button" onClick={() => {
-
                     if (fileUpload.files[0] !== undefined) {
-                        var messageWithImg = {};
-                        var reader = new FileReader();
-                        reader.readAsDataURL(fileUpload.files[0]);
-                        reader.onload = () => {
-                            console.log(reader.result);
-                            messageWithImg = {
-                                imgUrl: reader.result,
-                                messageContent: input.value
+                        const messageContent = input.value;
+                        const file = fileUpload.files[0];
+                        uploadAndGetUrl(file).then(result => {
+                            var messageWithImg = {
+                                imgUrl: result,
+                                messageContent: messageContent
                             }
-                            var toSendMessage = JSON.stringify(messageWithImg);
-                            sendMessages(toSendMessage);
-                        };
+                            sendMessages(JSON.stringify(messageWithImg));
+                        });
+                        fileUpload.value = ""; 
                     }
                     else {
-                        if (input.value !== "") {
-                            sendMessages(input.value);
-                        }
+                        sendMessages(input.value);
+                        console.log(fileUpload.files);
                     }
                     input.value = "";
-                }} type="button" value="Send" />
+                }}
+                    type="button" value="Send" />
             </div>
+            <input className={"input-file"} disabled={isDisbled} type="file" accept="image/*" ref={(ref) => fileUpload = ref} />
         </div>
     )
 }
+

@@ -1,7 +1,9 @@
 import { connect } from 'react-redux'
 import { withHandlers, compose } from 'recompose'
 import { firebaseConnect, isLoaded } from 'react-redux-firebase';
-import {ChatSpace} from '../component/ChatSpace'
+import { ChatSpace } from '../component/ChatSpace'
+import { resolve } from 'path';
+import { rejects } from 'assert';
 
 export const ChatSpaceContainer = compose(
     firebaseConnect({ path: 'messages' }),
@@ -14,7 +16,6 @@ export const ChatSpaceContainer = compose(
     withHandlers({
         sendMessages: props => message => {
             if (isLoaded(props.auth) && isLoaded(props.profile)) {
-                console.log(props.profile);
                 var currentDate = new Date();
                 props.firebase.push(`/messages/${props.auth.providerData[0].uid}/${props.uidToChat}`, {
                     from: props.auth.providerData[0].uid,
@@ -31,6 +32,20 @@ export const ChatSpaceContainer = compose(
                     avatar: props.profile.avatarUrl
                 })
             }
+        },
+        uploadAndGetUrl: props => file => {
+            var promise = new Promise((resolve, rejects) => {
+                const { firebase: { storage } } = props;
+                const storageRef = storage().ref(`images/${file.name}`);
+                storageRef.put(file)
+                    .then((snapshot) => {
+                        storageRef.getDownloadURL().then(result => {
+                            resolve(result);
+                        });
+                    });;
+            })
+            return promise;
+           
         }
     })
 

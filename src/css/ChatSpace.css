@@ -27,6 +27,18 @@
     width: 100%;
     margin-top: 5px;
 }
+.input-file {
+    border-radius: 0px;
+    margin: 5px 10px 5px 10px;
+    padding: 5px;
+    background: #ecf0f1;
+    border: 6px solid #353b48;
+    width: 78%;
+    color: red;
+}
+.input-file button {
+    background: red;
+}
 .text-area {
     width: 80%;
     float: left;
