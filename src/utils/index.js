@@ -17,3 +17,17 @@ export const UserIsNotAuthenticated = connectedRouterRedirect({
     dispatch({ type: 'UNAUTHED_REDIRECT' });
   },
 });
+
+export const UserIsAuthenticated = connectedRouterRedirect({
+  wrapperDisplayName: 'UserIsAuthenticated',
+  allowRedirectBack: true,
+  redirectPath: (state, ownProps) =>
+    locationHelper.getRedirectQueryParam(ownProps) || '/',
+  authenticatingSelector: ({ firebase: { auth, profile, isInitializing } }) =>
+    !auth.isLoaded || isInitializing === true,
+  authenticatedSelector: ({ firebase: { auth } }) =>
+    auth.isLoaded && !auth.isEmpty,
+  redirectAction: newLoc => (dispatch) => {
+    dispatch({ type: 'UNAUTHED_REDIRECT' });
+  },
+});
